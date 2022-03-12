@@ -9,13 +9,16 @@ spec:
     - /busybox/cat
     tty: true
     volumeMounts:
-      - name: docker-config
+      - name: kaniko-secret
         mountPath: /kaniko/.docker/
     resources: {}
   volumes:
-    - name: docker-config
-      configMap:
-        name: docker-config
+    - name: kaniko-secret
+      secret:
+        secretName: regcred
+        items:
+          - key: .dockerconfigjson
+            path: config.json
 """
   ) {
   node(POD_LABEL) {
